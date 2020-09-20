@@ -879,7 +879,10 @@ var BilibiliAPI = {
                     jsonp: jsonp,
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             })
         },
         getTags: () => {//获取关注分组
@@ -889,7 +892,10 @@ var BilibiliAPI = {
                     jsonp: 'jsonp',
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             });
         },
         getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp') => {//获取一个关注分组中的UP
@@ -903,7 +909,10 @@ var BilibiliAPI = {
                     jsonp: jsonp,
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             });
         },
         modify: (fid, act, re_src = 11) => {
@@ -917,7 +926,10 @@ var BilibiliAPI = {
                     jsonp: 'jsonp',
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             });
         },
         addUsers: (fid, tagids) => {
@@ -941,7 +953,10 @@ var BilibiliAPI = {
                     jsonp: jsonp
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             });
         }
     },
@@ -1078,7 +1093,10 @@ var BilibiliAPI = {
                     jsonp: jsonp //jsonp
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             });
         },
         getCoinInfo: (jsonp='jsonp', aid, _) => { //获取视频投币状态
@@ -1090,7 +1108,10 @@ var BilibiliAPI = {
                     _: _ //当前时间戳
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
             })
         },
         coin_add: (aid, multiply = 1) => {
@@ -1142,7 +1163,11 @@ var BilibiliAPI = {
                     jsonp: 'jsonp'
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPICallBack'
+                success: function (data) {
+                    console.log(data)
+                    return data
+                }
+
             });
         }
     },
@@ -1557,8 +1582,3 @@ var BilibiliAPI = {
 }
 
 BilibiliAPI.DanmuWebSocket.headerLength = 16;
-
-function BilibiliAPICallBack (data) {
-    return data
-}
-
