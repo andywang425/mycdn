@@ -879,7 +879,7 @@ var BilibiliAPI = {
                     jsonp: jsonp,
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             })
         },
         getTags: () => {//获取关注分组
@@ -889,7 +889,7 @@ var BilibiliAPI = {
                     jsonp: 'jsonp',
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         },
         getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp') => {//获取一个关注分组中的UP
@@ -903,7 +903,7 @@ var BilibiliAPI = {
                     jsonp: jsonp,
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         },
         modify: (fid, act, re_src = 11) => {
@@ -917,7 +917,7 @@ var BilibiliAPI = {
                     jsonp: 'jsonp',
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         },
         addUsers: (fid, tagids) => {
@@ -941,7 +941,7 @@ var BilibiliAPI = {
                     jsonp: jsonp
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         }
     },
@@ -1078,7 +1078,7 @@ var BilibiliAPI = {
                     jsonp: jsonp //jsonp
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         },
         getCoinInfo: (jsonp='jsonp', aid, _) => { //获取视频投币状态
@@ -1090,7 +1090,7 @@ var BilibiliAPI = {
                     _: _ //当前时间戳
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             })
         },
         coin_add: (aid, multiply = 1) => {
@@ -1142,7 +1142,7 @@ var BilibiliAPI = {
                     jsonp: 'jsonp'
                 },
                 dataType: 'jsonp',
-                jsonpCallback: 'BilibiliAPI'
+                jsonpCallback: 'BilibiliAPICallBack'
             });
         }
     },
