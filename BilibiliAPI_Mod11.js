@@ -1558,3 +1558,7 @@ var BilibiliAPI = {
 
 BilibiliAPI.DanmuWebSocket.headerLength = 16;
 
+function BilibiliAPICallBack (data) {
+    return data
+}
+
