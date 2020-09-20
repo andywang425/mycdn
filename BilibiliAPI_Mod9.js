@@ -868,7 +868,7 @@ var BilibiliAPI = {
                 url: 'relation/v1/Feed/IsUserFollow?follow=' + follow
             });
         },
-        getFollowings: (vmid, pn=1, ps=20, order='desc', jsonp='jsonp',callback='') => {//获取关注列表
+        getFollowings: (vmid, pn=1, ps=20, order='desc', jsonp='jsonp') => {//获取关注列表
             return BilibiliAPI.ajax({
                 url: '//api.bilibili.com/x/relation/followings',
                 data: {
@@ -877,9 +877,9 @@ var BilibiliAPI = {
                     ps: ps,
                     order: order,
                     jsonp: jsonp,
-                    callback: callback//__jp5
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             })
         },
         getTags: () => {//获取关注分组
@@ -887,12 +887,12 @@ var BilibiliAPI = {
                 url: '//api.bilibili.com/x/relation/tags',
                 data: {
                     jsonp: 'jsonp',
-                    callback: '__jp3'//__jp3
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         },
-        getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp', callback = '') => {//获取一个关注分组中的UP
+        getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp') => {//获取一个关注分组中的UP
             return BilibiliAPI.ajax({
                 url: '//api.bilibili.com/x/relation/tag',
                 data: {
@@ -901,9 +901,9 @@ var BilibiliAPI = {
                     pn: pn,//页数
                     ps: ps,//每页数量
                     jsonp: jsonp,
-                    callback: callback//__jp11
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         },
         modify: (fid, act, re_src = 11) => {
@@ -915,9 +915,9 @@ var BilibiliAPI = {
                     act: act,//1关注 2取消关注
                     re_src: re_src,
                     jsonp: 'jsonp',
-                    callback: '__jp3'//__jp3
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         },
         addUsers: (fid, tagids) => {
@@ -940,7 +940,8 @@ var BilibiliAPI = {
                     fids: fids,//目标uid。可以为数组，用逗号,隔开，需要编码(即用 %2C 隔开)
                     jsonp: jsonp
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         }
     },
@@ -1076,19 +1077,20 @@ var BilibiliAPI = {
                     order: order, //pubdate
                     jsonp: jsonp //jsonp
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         },
-        getCoinInfo: (callback, jsonp='jsonp', aid, _) => { //获取视频投币状态
+        getCoinInfo: (jsonp='jsonp', aid, _) => { //获取视频投币状态
             return BilibiliAPI.ajax({
                 url: '//api.bilibili.com/x/web-interface/archive/coins',
                 data: {
-                    callback: callback, //此项可以为空'' __jp5
                     jsonp: jsonp, //jsonp
                     aid: aid,
                     _: _ //当前时间戳
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             })
         },
         coin_add: (aid, multiply = 1) => {
@@ -1139,7 +1141,8 @@ var BilibiliAPI = {
                 data: {
                     jsonp: 'jsonp'
                 },
-                dataType: 'jsonp'
+                dataType: 'jsonp',
+                jsonpCallback: 'BilibiliAPI'
             });
         }
     },
