@@ -881,7 +881,7 @@ var BilibiliAPI = {
                 dataType: 'jsonp',
                 success: function (data) {
                     console.log(data)
-                    return data
+                    return eval(data)
                 }
             })
         },
