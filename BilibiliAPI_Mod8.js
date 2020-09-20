@@ -868,7 +868,7 @@ var BilibiliAPI = {
                 url: 'relation/v1/Feed/IsUserFollow?follow=' + follow
             });
         },
-        getFollowings: (vmid, pn=1, ps=20, order='desc', jsonp='jsonp',callback='__jp5') => {//获取关注列表
+        getFollowings: (vmid, pn=1, ps=20, order='desc', jsonp='jsonp',callback='') => {//获取关注列表
             return BilibiliAPI.ajax({
                 url: '//api.bilibili.com/x/relation/followings',
                 data: {
@@ -892,7 +892,7 @@ var BilibiliAPI = {
                 dataType: 'jsonp'
             });
         },
-        getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp', callback = '__jp11') => {//获取一个关注分组中的UP
+        getTagInfo: (mid, tagid, pn = 1, ps = 20, jsonp = 'jsonp', callback = '') => {//获取一个关注分组中的UP
             return BilibiliAPI.ajax({
                 url: '//api.bilibili.com/x/relation/tag',
                 data: {
