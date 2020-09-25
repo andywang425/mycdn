@@ -184,7 +184,7 @@ const ah = (W => {
             var xhrProxy = this.xhrProxy;
             var xhr = this.xhr;
             xhrProxy.readyState = 4;
-            xhr.resHeader = response.headers || {'content-type': 'text/text'};
+            xhr.resHeader = response.headers !== undefined ? response.headers : {'content-type': 'text/text'};
             xhrProxy.response = xhrProxy.responseText = response.response;
             xhrProxy.statusText = response.statusText;
             xhrProxy.status = response.status;
