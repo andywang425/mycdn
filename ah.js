@@ -1,45 +1,44 @@
 // ==UserScript==
 // @name        Ajax-hook
 // @namespace   https://github.com/wendux/Ajax-hook
-// @version     2.0.3
+// @version     2.0.0
 // @author      wendux
 // @description Ajax-hook
+// @grant         unsafeWindow
 // @run-at      document-start
 // ==/UserScript==
-
-const ah = (W => {
-    /*
-     * author: wendux
-     * email: 824783146@qq.com
-     * source code: https://github.com/wendux/Ajax-hook
-     */
-
+/*
+ * author: wendux
+ * email: 824783146@qq.com
+ * source code: https://github.com/wendux/Ajax-hook
+ */
+const ajaxHook = (W => {
     // Save original XMLHttpRequest as _rxhr
-    var realXhr = "_rxhr"
+    var realXhr = "_rxhr";
 
     function configEvent(event, xhrProxy) {
         var e = {};
-        for (var attr in event) e[attr] = event[attr];
-        // xhrProxy instead
-        e.target = e.currentTarget = xhrProxy
+        for (var attr in event) {
+            e[attr] = event[attr];
+        } // xhrProxy instead
+        e.target = e.currentTarget = xhrProxy;
         return e;
     }
 
     function hook(proxy) {
         // Avoid double hookAjax
-        W[realXhr] = W[realXhr] || W.XMLHttpRequest
+        W[realXhr] = W[realXhr] || XMLHttpRequest;
 
-        W.XMLHttpRequest = function () {
-            var xhr = new W[realXhr];
+        XMLHttpRequest = function XMLHttpRequest() {
+            var xhr = new W[realXhr]();
             // We shouldn't hookAjax XMLHttpRequest.prototype because we can't
             // guarantee that all attributes are on the prototype。
             // Instead, hooking XMLHttpRequest instance can avoid this problem.
             for (var attr in xhr) {
                 var type = "";
                 try {
-                    type = typeof xhr[attr] // May cause exception on some browser
-                } catch (e) {
-                }
+                    type = _typeof(xhr[attr]); // May cause exception on some browser
+                } catch (e) { }
                 if (type === "function") {
                     // hookAjax methods of xhr, such as `open`、`send` ...
                     this[attr] = hookFunction(attr);
@@ -48,23 +47,23 @@ const ah = (W => {
                         get: getterFactory(attr),
                         set: setterFactory(attr),
                         enumerable: true
-                    })
+                    });
                 }
             }
             var that = this;
             xhr.getProxy = function () {
-                return that
-            }
+                return that;
+            };
             this.xhr = xhr;
-        }
+        };
 
         // Generate getter for attributes of xhr
         function getterFactory(attr) {
             return function () {
                 var v = this.hasOwnProperty(attr + "_") ? this[attr + "_"] : this.xhr[attr];
-                var attrGetterHook = (proxy[attr] || {})["getter"]
-                return attrGetterHook && attrGetterHook(v, this) || v
-            }
+                var attrGetterHook = (proxy[attr] || {})["getter"];
+                return attrGetterHook && attrGetterHook(v, this) || v;
+            };
         }
 
         // Generate setter for attributes of xhr; by this we have an opportunity
@@ -78,36 +77,35 @@ const ah = (W => {
                 if (attr.substring(0, 2) === 'on') {
                     that[attr + "_"] = v;
                     xhr[attr] = function (e) {
-                        e = configEvent(e, that)
-                        var ret = proxy[attr] && proxy[attr].call(that, xhr, e)
+                        e = configEvent(e, that);
+                        var ret = proxy[attr] && proxy[attr].call(that, xhr, e);
                         ret || v.call(that, e);
-                    }
+                    };
                 } else {
                     //If the attribute isn't writable, generate proxy attribute
                     var attrSetterHook = (hook || {})["setter"];
-                    v = attrSetterHook && attrSetterHook(v, that) || v
+                    v = attrSetterHook && attrSetterHook(v, that) || v;
                     this[attr + "_"] = v;
                     try {
                         // Not all attributes of xhr are writable(setter may undefined).
                         xhr[attr] = v;
-                    } catch (e) {
-                    }
+                    } catch (e) { }
                 }
-            }
+            };
         }
 
         // Hook methods of xhr.
         function hookFunction(fun) {
             return function () {
-                var args = [].slice.call(arguments)
+                var args = [].slice.call(arguments);
                 if (proxy[fun]) {
-                    var ret = proxy[fun].call(this, args, this.xhr)
+                    var ret = proxy[fun].call(this, args, this.xhr);
                     // If the proxy return value exists, return it directly,
                     // otherwise call the function of xhr.
                     if (ret) return ret;
                 }
                 return this.xhr[fun].apply(this.xhr, args);
-            }
+            };
         }
 
         // Return the real XMLHttpRequest
@@ -115,17 +113,10 @@ const ah = (W => {
     }
 
     function unHook() {
-        if (W[realXhr]) W.XMLHttpRequest = W[realXhr];
+        if (W[realXhr]) XMLHttpRequest = W[realXhr];
         W[realXhr] = undefined;
     }
-
-    /*
-     * author: wendux
-     * email: 824783146@qq.com
-     * source code: https://github.com/wendux/Ajax-hook
-     */
-
-
+    //proxy
     var events = ['load', 'loadend', 'timeout', 'error', 'readystatechange', 'abort'];
     var eventLoad = events[0],
         eventLoadEnd = events[1],
@@ -133,38 +124,38 @@ const ah = (W => {
         eventError = events[3],
         eventReadyStateChange = events[4],
         eventAbort = events[5];
-
-
+    
+    
     var singleton,
         prototype = 'prototype';
-
-
+    
+    
     function proxy(proxy) {
         if (singleton) throw "Proxy already exists";
         return singleton = new Proxy(proxy);
     }
-
+    
     function unProxy() {
         singleton = null
         unHook()
     }
-
+    
     function trim(str) {
         return str.replace(/^\s+|\s+$/g, '');
     }
-
+    
     function getEventTarget(xhr) {
         return xhr.watcher || (xhr.watcher = document.createElement('a'));
     }
-
+    
     function triggerListener(xhr, name) {
         var xhrProxy = xhr.getProxy();
         var callback = 'on' + name + '_';
-        var event = configEvent({ type: name }, xhrProxy);
+        var event = configEvent({type: name}, xhrProxy);
         xhrProxy[callback] && xhrProxy[callback](event);
         var evt;
-        if (typeof (Event) === 'function') {
-            evt = new Event(name, { bubbles: false });
+        if(typeof(Event) === 'function') {
+            evt = new Event(name,{bubbles: false});
         } else {
             // https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11
             evt = document.createEvent('Event');
@@ -172,13 +163,13 @@ const ah = (W => {
         }
         getEventTarget(xhr).dispatchEvent(evt);
     }
-
-
+    
+    
     function Handler(xhr) {
         this.xhr = xhr;
         this.xhrProxy = xhr.getProxy();
     }
-
+    
     Handler[prototype] = Object.create({
         resolve: function resolve(response) {
             var xhrProxy = this.xhrProxy;
@@ -198,17 +189,17 @@ const ah = (W => {
             triggerListener(this.xhr, eventLoadEnd);
         }
     });
-
+    
     function makeHandler(next) {
         function sub(xhr) {
             Handler.call(this, xhr);
         }
-
+    
         sub[prototype] = Object.create(Handler[prototype]);
         sub[prototype].next = next;
         return sub;
     }
-
+    
     var RequestHandler = makeHandler(function (rq) {
         var xhr = this.xhr;
         rq = rq || xhr.config;
@@ -219,20 +210,20 @@ const ah = (W => {
         }
         xhr.send(rq.body);
     });
-
+    
     var ResponseHandler = makeHandler(function (response) {
         this.resolve(response);
     });
-
+    
     var ErrorHandler = makeHandler(function (error) {
         this.reject(error);
     });
-
+    
     function Proxy(proxy) {
         var onRequest = proxy.onRequest,
             onResponse = proxy.onResponse,
             onError = proxy.onError;
-
+    
         function handleResponse(xhr, xhrProxy) {
             var handler = new ResponseHandler(xhr);
             if (!onResponse) return handler.resolve();
@@ -250,26 +241,26 @@ const ah = (W => {
             };
             onResponse(ret, handler);
         }
-
+    
         function onerror(xhr, xhrProxy, e) {
             var handler = new ErrorHandler(xhr);
-            var error = { config: xhr.config, error: e };
+            var error = {config: xhr.config, error: e};
             if (onError) {
                 onError(error, handler);
             } else {
                 handler.next(error);
             }
         }
-
+    
         function preventXhrProxyCallback() {
             return true;
         }
-
+    
         function errorCallback(xhr, e) {
             onerror(xhr, this, e);
             return true;
         }
-
+    
         function stateChangeCallback(xhr, xhrProxy) {
             if (xhr.readyState === 4 && xhr.status !== 0) {
                 handleResponse(xhr, xhrProxy);
@@ -278,7 +269,7 @@ const ah = (W => {
             }
             return true;
         }
-
+    
         return hook({
             onload: preventXhrProxyCallback,
             onloadend: preventXhrProxyCallback,
@@ -290,7 +281,7 @@ const ah = (W => {
             },
             open: function open(args, xhr) {
                 var _this = this;
-                var config = xhr.config = { headers: {} };
+                var config = xhr.config = {headers: {}};
                 config.method = args[0];
                 config.url = args[1];
                 config.async = args[2];
@@ -303,7 +294,7 @@ const ah = (W => {
                         return stateChangeCallback(xhr, _this);
                     };
                 }
-
+    
                 var defaultErrorHandler = function defaultErrorHandler(e) {
                     onerror(xhr, _this, configEvent(e, _this));
                 };
@@ -311,7 +302,7 @@ const ah = (W => {
                     var event = 'on' + e;
                     if (!xhr[event]) xhr[event] = defaultErrorHandler;
                 });
-
+    
                 // 如果有请求拦截器，则在调用onRequest后再打开链接。因为onRequest最佳调用时机是在send前，
                 // 所以我们在send拦截函数中再手动调用open，因此返回true阻止xhr.open调用。
                 //
@@ -320,7 +311,7 @@ const ah = (W => {
             },
             send: function (args, xhr) {
                 var config = xhr.config
-                config.withCredentials = xhr.withCredentials
+                config.withCredentials=xhr.withCredentials
                 config.body = args[0];
                 if (onRequest) {
                     // In 'onRequest', we may call XHR's event handler, such as `xhr.onload`.
@@ -376,4 +367,4 @@ const ah = (W => {
         hook,
         unHook,
     }
-})(typeof unsafeWindow === 'undefined' ? window : unsafeWindow)
+})(typeof unsafeWindow === 'undefined' ? window : unsafeWindow);
