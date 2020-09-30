@@ -29,7 +29,7 @@ const ah = (W => {
         // Avoid double hookAjax
         W[realXhr] = W[realXhr] || W.XMLHttpRequest;
 
-        W.XMLHttpRequest = function XMLHttpRequest() {
+        W.XMLHttpRequest = function () {
             var xhr = new W[realXhr]();
             // We shouldn't hookAjax XMLHttpRequest.prototype because we can't
             // guarantee that all attributes are on the prototype。
