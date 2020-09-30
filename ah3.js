@@ -12,7 +12,7 @@
  * email: 824783146@qq.com
  * source code: https://github.com/wendux/Ajax-hook
  */
-const ajaxHook = (W => {
+const ah = (W => {
     // Save original XMLHttpRequest as _rxhr
     var realXhr = "_rxhr";
 
@@ -27,10 +27,10 @@ const ajaxHook = (W => {
 
     function hook(proxy) {
         // Avoid double hookAjax
-        W[realXhr] = W[realXhr] || XMLHttpRequest;
+        W[realXhr] = W[realXhr] || W.XMLHttpRequest;
 
-        XMLHttpRequest = function XMLHttpRequest() {
-            var xhr = new W[realXhr];
+        W.XMLHttpRequest = function XMLHttpRequest() {
+            var xhr = new W[realXhr]();
             // We shouldn't hookAjax XMLHttpRequest.prototype because we can't
             // guarantee that all attributes are on the prototype。
             // Instead, hooking XMLHttpRequest instance can avoid this problem.
