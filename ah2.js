@@ -30,7 +30,7 @@ const ajaxHook = (W => {
         W[realXhr] = W[realXhr] || XMLHttpRequest;
 
         XMLHttpRequest = function XMLHttpRequest() {
-            var xhr = new W[realXhr]();
+            var xhr = new W[realXhr];
             // We shouldn't hookAjax XMLHttpRequest.prototype because we can't
             // guarantee that all attributes are on the prototype。
             // Instead, hooking XMLHttpRequest instance can avoid this problem.
