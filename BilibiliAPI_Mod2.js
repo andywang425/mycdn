@@ -1213,6 +1213,15 @@ var BilibiliAPI = {
         dosign: () => {
             return BilibiliAPI.ajax({
                 url: 'xlive/web-ucenter/v1/sign/DoSign'
+            })
+        },
+        getDanmuInfo: (id, type = 0) => {
+            return BilibiliAPI.ajax({
+                url: 'xlive/web-room/v1/index/getDanmuInfo',
+                data: {
+                    id: id,//roomid
+                    type: type
+                }
             });
         },
         anchor: {
@@ -1259,12 +1268,9 @@ var BilibiliAPI = {
             for (var i = 0; i < charList.length; ++i) {
                 uintArray.push(charList[i].charCodeAt(0));
             }
-            console.log('stringToUint output', new Uint8Array(uintArray))
             return new Uint8Array(uintArray);
         }
         static uintToString(uintArray) {
-            console.log('uintToString',uintArray)
-            console.log('uintToString output',decodeURIComponent(escape(String.fromCharCode.apply(null, uintArray))))
             return decodeURIComponent(escape(String.fromCharCode.apply(null, uintArray)));
         }
         constructor(uid, roomid, host_server_list, token) {
