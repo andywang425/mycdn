@@ -1215,6 +1215,15 @@ var BilibiliAPI = {
                 url: 'xlive/web-ucenter/v1/sign/DoSign'
             });
         },
+        getDanmuInfo: (id, type = 0) => {
+            return BilibiliAPI.ajax({
+                url: 'xlive/web-room/v1/index/getDanmuInfo',
+                data: {
+                    id: id,//roomid
+                    type: type
+                }
+            });
+        },
         anchor: {
             check: (roomid) => {
                 return BilibiliAPI.ajax({
@@ -1270,7 +1279,7 @@ var BilibiliAPI = {
                 let flag = false;
                 do {
                     const chosen = host_server_list.shift();
-                    if (chosen.wss_port) address = `wss://${chosen.host}:${chosen.ws_port}/sub`;
+                    if (chosen.ws_port) address = `ws://${chosen.host}:${chosen.ws_port}/sub`;
                     else flag = true;
                 } while (flag && host_server_list.length > 0);
             } else if (typeof host_server_list === 'string' && host_server_list.length > 0) {
