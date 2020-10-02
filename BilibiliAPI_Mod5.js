@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          BilibiliAPI_mod
 // @namespace     https://github.com/SeaLoong
-// @version       1.7
+// @version       1.8
 // @description   BilibiliAPI，PC端抓包研究所得，原作者是SeaLoong。我在此基础上补充新的API。
 // @author        SeaLoong, andywang425
 // @require       https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
@@ -1014,6 +1014,25 @@ var BilibiliAPI = {
                     tag_version: tag_version
                 }
             });
+        },
+        update: (room_id, description) => {
+            return BilibiliAPI.ajaxWithCommonArgs({
+                method: 'POST',
+                url: "room/v1/Room/update",
+                data: {
+                    room_id: room_id,
+                    description: description
+                }
+            })
+        },
+        getRoomBaseInfo: (room_ids, req_biz = 'link-center') => {
+            return BilibiliAPI.ajax({
+                url: 'xlive/web-room/v1/index/getRoomBaseInfo',
+                data: {
+                    room_ids: room_ids,//roomid
+                    req_biz: req_biz
+                }
+            });
         }
     },
     sign: {
@@ -1279,7 +1298,7 @@ var BilibiliAPI = {
                 let flag = false;
                 do {
                     const chosen = host_server_list.shift();
-                    if (chosen.ws_port) address = `ws://${chosen.host}:${chosen.ws_port}/sub`;
+                    if (chosen.wss_port) address = `wss://${chosen.host}:${chosen.wss_port}/sub`;
                     else flag = true;
                 } while (flag && host_server_list.length > 0);
             } else if (typeof host_server_list === 'string' && host_server_list.length > 0) {
@@ -1578,4 +1597,3 @@ var BilibiliAPI = {
 }
 
 BilibiliAPI.DanmuWebSocket.headerLength = 16;
-
