@@ -1025,6 +1025,14 @@ var BilibiliAPI = {
                 }
             })
         },
+        getRoomInfoOld:(mid) => {
+            return BilibiliAPI.ajax({
+                url: 'room/v1/Room/getRoomInfoOld',
+                data: {
+                    mid: mid //uid
+                }
+            });
+        },
         getRoomBaseInfo: (room_ids, req_biz = 'link-center') => {
             return BilibiliAPI.ajax({
                 url: 'xlive/web-room/v1/index/getRoomBaseInfo',
