@@ -80,10 +80,12 @@ var BilibiliAPI = {
         share: (aid) => BilibiliAPI.x.share_add(aid)
     },
     // ajax调用B站API
-    runUntilSucceed: (callback, delay = 0, period = 2) => {
-        setTimeout(() => {
-            if (!callback()) BilibiliAPI.runUntilSucceed(callback, period, period);
-        }, delay);
+    runUntilSucceed: (callback, delay = 0, maxTry = 2) => {
+        if (maxTry > 0) {
+            setTimeout(() => {
+                if (!callback()) BilibiliAPI.runUntilSucceed(callback, 500, --maxTry);
+            }, delay);
+        }
     },
     processing: 0,
     ajax: (settings) => {
