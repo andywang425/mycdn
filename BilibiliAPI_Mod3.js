@@ -10,13 +10,14 @@
 // @license       MIT
 // ==/UserScript==
 
-let csrf_token, visit_id,
-    ts_ms = () => Date.now(),//当前毫秒
-    ts_s = () => Math.round(ts_ms() / 1000);//当前秒
 var BilibiliAPI = {
+    csrf_token: undefined,
+    visit_id: undefined,
+    ts_ms = () => Date.now(),//当前毫秒
+    ts_s = () => Math.round(BilibiliAPI.ts_ms() / 1000),//当前秒
     setCommonArgs: (csrfToken = '', visitId = '') => {
-        csrf_token = csrfToken;
-        visit_id = visitId;
+        BilibiliAPI.csrf_token = csrfToken;
+        BilibiliAPI.visit_id = visitId;
     },
     // 整合常用API
     TreasureBox: {
@@ -115,8 +116,8 @@ var BilibiliAPI = {
     },
     ajaxWithCommonArgs: (settings) => {
         if (!settings.data) settings.data = {};
-        settings.data.csrf = csrf_token;
-        settings.data.csrf_token = csrf_token;
+        settings.data.csrf = BilibiliAPI.csrf_token;
+        settings.data.csrf_token = BilibiliAPI.csrf_token;
         settings.data.visit_id = visit_id;
         return BilibiliAPI.ajax(settings);
     },
@@ -1607,7 +1608,7 @@ var BilibiliAPI = {
                 fontsize: fontsize,
                 mode: mode,
                 msg: msg,
-                rnd: ts_ms(),
+                rnd: BilibiliAPI.ts_ms(),
                 roomid: roomid,
                 bubble: bubble
 
@@ -1625,7 +1626,7 @@ var BilibiliAPI = {
                 'msg[msg_type]': msg['msg_type'] || 1,
                 'msg[msg_status]': msg['msg_status'] || 0,
                 'msg[content]': msg['content'],
-                'msg[timestamp]': ts_s(),
+                'msg[timestamp]': BilibiliAPI.ts_s(),
                 'msg[dev_id]': msg['dev_id'],
                 'build': build,
                 'mobi_app': mobi_app
