@@ -1071,6 +1071,15 @@ var BilibiliAPI = {
                     req_biz: req_biz
                 }
             });
+        },
+        verify_room_pwd: (room_id, pwd = '') => {
+            return BilibiliAPI.ajax({
+                url: 'room/v1/Room/verify_room_pwd',
+                data: {
+                    room_id: room_id,
+                    pwd: pwd
+                }
+            })
         }
     },
     sign: {
